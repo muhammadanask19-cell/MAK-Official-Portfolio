@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAK Portfolio | Muhammad Anas Khan</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ============ CSS CUSTOM PROPERTIES ============ */
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #e4e4e4;
+            --text-secondary: #b0b0b0;
+            --accent: #00d2ff;
+            --accent-dark: #0088aa;
+            --gradient: linear-gradient(135deg, #00d2ff 0%, #7b2ff7 100%);
+            --gradient-text: linear-gradient(135deg, #00d2ff, #7b2ff7);
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 16px 48px rgba(0, 210, 255, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --max-width: 1200px;
+            --nav-height: 70px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--nav-height);
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridShift 20s linear infinite;
+        }
+
+        @keyframes gridShift {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 60px 60px, 60px 60px; }
+        }
+
+        header, main, footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+        h2 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient);
+            margin: 0.8rem auto 0;
+            border-radius: 2px;
+        }
+        h3 { font-size: 1.4rem; }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: -2rem;
+            margin-bottom: 3rem;
+            font-size: 1.05rem;
+        }
+
+        .gradient-text {
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* ============ NAVIGATION ============ */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            height: var(--nav-height);
+            background: rgba(15, 15, 26, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        nav.scrolled {
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+            background: rgba(15,15,26,0.95);
+        }
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .nav-logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+        .nav-logo span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            position: relative;
+            padding: 0.3rem 0;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: width var(--transition);
+        }
+        .nav-links a:hover,
+        .nav-links a.active { color: #fff; }
+        .nav-links a:hover::after,
+        .nav-links a.active::after { width: 100%; }
+
+        .nav-cta {
+            background: var(--gradient);
+            padding: 0.6rem 1.4rem !important;
+            border-radius: 50px;
+            color: #fff !important;
+            font-weight: 600 !important;
+            box-shadow: 0 4px 15px rgba(0,210,255,0.3);
+        }
+        .nav-cta:hover {
+            box-shadow: 0 8px 25px rgba(0,210,255,0.5);
+            transform: translateY(-2px);
+        }
+        .nav-cta::after { display: none !important; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+        .hamburger span {
+            width: 28px; height: 3px;
+            background: #fff;
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px,6px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px,-6px); }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: var(--nav-height);
+        }
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .hero-content .greeting {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+        .hero-content h1 { margin-bottom: 0.5rem; }
+        .hero-content .tagline {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+        .hero-content .bio {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            font-size: 1.05rem;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+        }
+        .btn-primary {
+            background: var(--gradient);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0,210,255,0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 8px 30px rgba(0,210,255,0.5);
+            transform: translateY(-3px);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: rgba(0,210,255,0.05);
+            transform: translateY(-3px);
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-avatar-wrapper {
+            position: relative;
+            width: 320px; height: 320px;
+            border-radius: 50%;
+            background: var(--gradient);
+            padding: 5px;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%,100%{ transform: translateY(0); }
+            50%{ transform: translateY(-20px); }
+        }
+        .hero-avatar {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: var(--accent);
+            overflow: hidden;
+        }
+        .hero-avatar img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        .hero-avatar .avatar-placeholder {
+            font-size: 7rem;
+            font-weight: 800;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ============ ABOUT ============ */
+        .about { padding: 6rem 0; }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.8rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .stat-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+        }
+        .stat-card .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        /* ============ EXPERTISE ============ */
+        .expertise {
+            padding: 6rem 0;
+            background: var(--bg-secondary);
+        }
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+        }
+        .expertise-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 2rem 1rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: default;
+        }
+        .expertise-item:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+        }
+        .expertise-item i {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .expertise-item span {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* ============ JOURNEY (TIMELINE) ============ */
+        .journey {
+            padding: 6rem 0;
+        }
+        .timeline {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0; bottom: 0;
+            width: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 55px;
+            margin-bottom: 2.5rem;
+        }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-dot {
+            position: absolute;
+            left: 11px; top: 4px;
+            width: 22px; height: 22px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 4px solid var(--bg-primary);
+            box-shadow: 0 0 0 3px var(--accent);
+            z-index: 2;
+        }
+        .timeline-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+        .timeline-content:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-hover);
+        }
+        .timeline-content .date {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+        .timeline-content h3 { margin-bottom: 0.2rem; }
+        .timeline-content .sub {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.6rem;
+        }
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ============ CONTACT ============ */
+        .contact {
+            padding: 6rem 0;
+            background: var(--bg-secondary);
+        }
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .contact-info h3 { margin-bottom: 1rem; }
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .contact-detail i {
+            font-size: 1.3rem;
+            color: var(--accent);
+            width: 40px; height: 40px;
+            background: rgba(0,210,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-detail span { color: var(--text-secondary); }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .social-links a {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+        .social-links a:hover {
+            border-color: var(--accent);
+            background: rgba(0,210,255,0.1);
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: var(--transition);
+            resize: vertical;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0,210,255,0.1);
+        }
+        .contact-form textarea { min-height: 130px; }
+        .contact-form .btn-primary { align-self: flex-start; }
+        .form-success {
+            display: none;
+            color: #4ade80;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .form-success.show { display: block; }
+
+        /* ============ FOOTER ============ */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        footer span { color: var(--accent); }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            width: 48px; height: 48px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            border: none;
+            z-index: 999;
+            opacity: 0; visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0,210,255,0.3);
+            cursor: pointer;
+        }
+        .scroll-top.visible { opacity: 1; visibility: visible; }
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,210,255,0.5);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 900px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-content .bio { max-width: 100%; }
+            .hero-buttons { justify-content: center; }
+            .hero-visual { order: -1; }
+            .hero-avatar-wrapper { width: 240px; height: 240px; }
+            .hero-avatar .avatar-placeholder { font-size: 5rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-wrapper { grid-template-columns: 1fr; }
+
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 280px; height: 100vh;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2.5rem;
+                transition: right var(--transition);
+                box-shadow: -10px 0 40px rgba(0,0,0,0.6);
+                z-index: 1000;
+            }
+            .nav-links.open { right: 0; }
+            .hamburger { display: flex; }
+            .nav-links a { font-size: 1.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .expertise-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-stats { grid-template-columns: 1fr 1fr; }
+            .hero-avatar-wrapper { width: 180px; height: 180px; }
+            .hero-avatar .avatar-placeholder { font-size: 3.5rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav id="navbar">
+            <div class="container">
+                <a href="#hero" class="nav-logo">&lt;<span>MAK</span>/&gt;</a>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#hero" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#expertise">Expertise</a></li>
+                    <li><a href="#journey">Journey</a></li>
+                    <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero" id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <p class="greeting">👋 Hello, I'm</p>
+                    <h2 class="gradient-text">Muhammad Anas Khan</h2>
+                    <p class="tagline">Amazon FBA Expert | Product Hunter & Sourcing Specialist</p>
+                    <p class="bio">
+                        I help sellers find winning products, master Seller Central, and build
+                        efficient sourcing pipelines. With 2 years of hands‑on FBA experience,
+                        I bring real‑world insight – not just theory.
+                    </p>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-avatar-wrapper">
+                        <div class="hero-avatar">
+                            <img src="my-photo.jpg" alt="Muhammad Anas Khan">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="about" id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p class="section-subtitle">Straightforward, honest, and focused on results</p>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p>
+                            I started my Amazon journey two years ago with a simple goal: understand the marketplace
+                            from the inside out. Since then I’ve been fully immersed in <strong>Seller Central</strong>,
+                            learning every feature, report, and trick that makes a difference.
+                        </p>
+                        <p>
+                            I don’t deal with private label products – my strength lies in <strong>product hunting,
+                            sourcing, and optimizing existing accounts</strong>. I’ve spent countless hours analyzing
+                            data, negotiating with suppliers, and fine‑tuning listings for maximum visibility.
+                        </p>
+                        <p>
+                            Today I run my own Amazon account and help other sellers do the same. I believe in
+                            practical, no‑fluff advice that comes from real experience, not just courses.
+                        </p>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <span class="stat-number">2+</span>
+                            <span class="stat-label">Years on Amazon</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">150+</span>
+                            <span class="stat-label">Products Hunted</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">30+</span>
+                            <span class="stat-label">Suppliers Vetted</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">Daily</span>
+                            <span class="stat-label">Seller Central Deep Dives</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERTISE -->
+        <section class="expertise" id="expertise">
+            <div class="container">
+                <h2>Core Expertise</h2>
+                <p class="section-subtitle">What I bring to the table</p>
+                <div class="expertise-grid">
+                    <div class="expertise-item"><i class="fab fa-amazon"></i><span>Seller Central Mastery</span></div>
+                    <div class="expertise-item"><i class="fas fa-search-dollar"></i><span>Product Hunting</span></div>
+                    <div class="expertise-item"><i class="fas fa-truck-loading"></i><span>Sourcing</span></div>
+                    <div class="expertise-item"><i class="fas fa-chart-bar"></i><span>Market Analysis</span></div>
+                    <div class="expertise-item"><i class="fas fa-boxes"></i><span>Inventory Management</span></div>
+                    <div class="expertise-item"><i class="fas fa-file-invoice-dollar"></i><span>Profit Calculation</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JOURNEY -->
+        <section class="journey" id="journey">
+            <div class="container">
+                <h2>My Journey</h2>
+                <p class="section-subtitle">How I became an Amazon FBA specialist</p>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="date">2024 — Present</span>
+                            <h3>Independent Amazon FBA Specialist</h3>
+                            <p class="sub">Self‑Employed</p>
+                            <p>Managing my own Amazon account while helping clients with product research, sourcing, and Seller Central operations. Sharpening skills daily through live account management.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="date">2023 — 2024</span>
+                            <h3>Amazon FBA Learner & Practitioner</h3>
+                            <p class="sub">Hands‑on Training Phase</p>
+                            <p>Dived deep into Amazon’s ecosystem – mastered Seller Central, product hunting tools, supplier communication, and listing optimization. Started building my first income streams.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2>Let's Connect</h2>
+                <p class="section-subtitle">I'm just a message away</p>
+                <div class="contact-wrapper">
+                    <div class="contact-info">
+                        <h3>Reach out directly</h3>
+                        <p>
+                            Whether you need help with product hunting, sourcing, or navigating Seller Central – I'm here to help. Let's grow together.
+                        </p>
+                        <div class="contact-detail">
+                            <i class="fas fa-envelope"></i>
+                            <span>anaskhan1917m@gmail.com</span>
+                        </div>
+                        <div class="contact-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Peshawar, KPK, Pakistan</span>
+                        </div>
+                        <div class="contact-detail">
+                            <i class="fas fa-phone"></i>
+                            <span>+92 328-5037693</span>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    <form class="contact-form" id="contactForm">
+                        <input type="text" id="name" placeholder="Your Name" required>
+                        <input type="email" id="email" placeholder="Your Email" required>
+                        <input type="text" id="subject" placeholder="Subject (e.g. Product Hunting Help)">
+                        <textarea id="message" placeholder="Tell me what you need..." required></textarea>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send Message</button>
+                        <span class="form-success" id="formSuccess">✅ Message sent successfully!</span>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 <span>Muhammad Anas Khan</span>. Amazon FBA Expert. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        (function() {
+            const navbar = document.getElementById('navbar');
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            const allNavLinks = navLinks.querySelectorAll('a');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const contactForm = document.getElementById('contactForm');
+            const formSuccess = document.getElementById('formSuccess');
+            const sections = document.querySelectorAll('section[id]');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('open');
+                document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+            });
+
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                navbar.classList.toggle('scrolled', scrollY > 50);
+                scrollTopBtn.classList.toggle('visible', scrollY > 600);
+
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                allNavLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+                });
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const message = document.getElementById('message').value.trim();
+                if (!name || !email || !message) { alert('Please fill in all required fields.'); return; }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email.'); return; }
+                formSuccess.classList.add('show');
+                contactForm.reset();
+                setTimeout(() => formSuccess.classList.remove('show'), 4000);
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+            document.querySelectorAll('.expertise-item, .stat-card, .timeline-item, .contact-detail').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        })();
+    </script>
+</body>
+</html>
